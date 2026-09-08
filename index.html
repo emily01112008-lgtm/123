@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>個人作品集 | 大學四年成果展</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- 導覽列 -->
+  <header class="navbar">
+    <div class="logo">PORTFOLIO.</div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#about">關於我</a></li>
+        <li><a href="#projects">專案成果</a></li>
+        <li><a href="#contact">聯絡方式</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero 主視覺區 -->
+  <section id="hero" class="hero-section">
+    <div class="hero-content">
+      <h1>你好，我是 <span class="highlight">創作者名稱</span></h1>
+      <p>專注於人文思考、文案創作與數位行銷的大學四年間專案紀錄。</p>
+      <a href="#projects" class="btn">瀏覽作品</a>
+    </div>
+  </section>
+
+  <!-- 關於我區塊 -->
+  <section id="about" class="container">
+    <h2>關於這個網站</h2>
+    <p>這裡記錄了我從大一到大四的學術探索、小論文、專題報告與各類創作。記錄成長的軌跡，也呈現我對不同領域的洞察與熱情。</p>
+  </section>
+
+  <!-- 專案展示區塊 -->
+  <section id="projects" class="container">
+    <h2>專案成果展</h2>
+    
+    <!-- 年級篩選按鈕 (TypeScript 控制) -->
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">全部展示</button>
+      <button class="filter-btn" data-filter="year1">大一</button>
+      <button class="filter-btn" data-filter="year2">大二</button>
+      <button class="filter-btn" data-filter="year3">大三</button>
+      <button class="filter-btn" data-filter="year4">大四</button>
+    </div>
+
+    <!-- 專案網格卡片 -->
+    <div class="projects-grid">
+      <!-- 專案卡片 1 -->
+      <article class="project-card" data-year="year1">
+        <div class="card-tag">大一 / 文學與創作</div>
+        <h3>當代文學作品賞析與小論文</h3>
+        <p>探討現代散文中的情感表達與空間意象，深入分析文本結構與修辭技巧。</p>
+        <a href="#" class="card-link">查看詳情 &rarr;</a>
+      </article>
+
+      <!-- 專案卡片 2 -->
+      <article class="project-card" data-year="year2">
+        <div class="card-tag">大二 / 數位行銷</div>
+        <h3>品牌社群媒體行銷企劃案</h3>
+        <p>針對特定品牌進行受眾分析、社群貼文規劃與文案撰寫，提升品牌曝光度。</p>
+        <a href="#" class="card-link">查看詳情 &rarr;</a>
+      </article>
+
+      <!-- 專案卡片 3 -->
+      <article class="project-card" data-year="year3">
+        <div class="card-tag">大三 / 專題研究</div>
+        <h3>地方文化特色與觀光推廣專案</h3>
+        <p>結合實地田野調查與歷史脈絡整理，設計一套適合在地旅遊的推廣方案。</p>
+        <a href="#" class="card-link">查看詳情 &rarr;</a>
+      </article>
+
+      <!-- 專案卡片 4 -->
+      <article class="project-card" data-year="year4">
+        <div class="card-tag">大四 / 畢業專題</div>
+        <h3>個人 IP 建立與整合行銷畢業製作</h3>
+        <p>整合大學四年所學，從自媒體定位、內容產生到網站架設的全方位實踐。</p>
+        <a href="#" class="card-link">查看詳情 &rarr;</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- 頁尾 -->
+  <footer id="contact">
+    <p>&copy; 2026 Personal Portfolio. All Rights Reserved.</p>
+  </footer>
+
+  <script src="dist/app.js"></script>
+</body>
+</html>
