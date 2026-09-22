@@ -1,0 +1,68 @@
+/* 全局基礎樣式重置 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+  padding: 40px 20px;
+}
+
+/* 頁面標題 */
+.header h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #2c3e50;
+  letter-spacing: 1px;
+}
+
+/* 展示區塊彈性排版 */
+.gallery-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 卡片容器 */
+.gallery-item {
+  display: block;
+  width: 280px;
+  height: 200px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  /* 平滑過渡動畫 */
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+  text-decoration: none;
+}
+
+/* 圖片樣式 */
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 完整顯示圖片內容不裁切 */
+  display: block;
+  padding: 8px;
+}
+
+/* 滑鼠懸停效果 (奇數張：順時針旋轉 + 浮起 + 放大) */
+.gallery-item:nth-child(odd):hover {
+  transform: translateY(-10px) rotate(3deg) scale(1.05);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+}
+
+/* 滑鼠懸停效果 (偶數張：逆時針旋轉 + 浮起 + 放大) */
+.gallery-item:nth-child(even):hover {
+  transform: translateY(-10px) rotate(-3deg) scale(1.05);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+}
