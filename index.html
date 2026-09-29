@@ -1,93 +1,252 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>個人作品集 | 大學四年成果展</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宿舍好收 | 專為大一新生與小書桌打造</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- 導覽列 -->
-  <header class="navbar">
-    <div class="logo">PORTFOLIO.</div>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#about">關於我</a></li>
-        <li><a href="#projects">專案成果</a></li>
-        <li><a href="#contact">聯絡方式</a></li>
-      </ul>
-    </nav>
+
+  <!-- 頂部固定 Header -->
+  <header class="top-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="logo-icon">📦</div>
+        <div class="brand-text">
+          <h1>宿舍好收</h1>
+          <p>專為大一新生與小書桌打造</p>
+        </div>
+      </div>
+      
+      <div class="header-right">
+        <div class="calc-box">
+          <span class="calc-label">當前累計總計：</span>
+          <span class="calc-amount" id="total-price">NT$ 0 <small>/ 500元</small></span>
+        </div>
+        <div class="shipping-box">
+          <label for="shipping-select">運費計算：</label>
+          <select id="shipping-select" onchange="updateCartUI()">
+            <option value="60">超商取貨 (+NT$60)</option>
+            <option value="100">宅配到府 (+NT$100)</option>
+            <option value="0">校園面交 (+NT$0)</option>
+          </select>
+        </div>
+        <button class="cart-btn" id="cart-header-btn">🛒 未選購</button>
+      </div>
+    </div>
   </header>
 
-  <!-- Hero 主視覺區 -->
-  <section id="hero" class="hero-section">
-    <div class="hero-content">
-      <h1>你好，我是 <span class="highlight">創作者名稱</span></h1>
-      <p>專注於人文思考、文案創作與數位行銷的大學四年間專案紀錄。</p>
-      <a href="#projects" class="btn">瀏覽作品</a>
-    </div>
-  </section>
-
-  <!-- 關於我區塊 -->
-  <section id="about" class="container">
-    <h2>關於這個網站</h2>
-    <p>這裡記錄了我從大一到大四的學術探索、小論文、專題報告與各類創作。記錄成長的軌跡，也呈現我對不同領域的洞察與熱情。</p>
-  </section>
-
-  <!-- 專案展示區塊 -->
-  <section id="projects" class="container">
-    <h2>專案成果展</h2>
+  <main class="main-container">
     
-    <!-- 年級篩選按鈕 (TypeScript 控制) -->
-    <div class="filter-buttons">
-      <button class="filter-btn active" data-filter="all">全部展示</button>
-      <button class="filter-btn" data-filter="year1">大一</button>
-      <button class="filter-btn" data-filter="year2">大二</button>
-      <button class="filter-btn" data-filter="year3">大三</button>
-      <button class="filter-btn" data-filter="year4">大四</button>
+    <!-- 橘色痛點 Banner -->
+    <section class="banner-card">
+      <div class="banner-badge">💡 解決大一新生 500 元痛點</div>
+      <h2>書桌空間太小？運費尺寸標示不清？</h2>
+      <p>我們幫你把「商品實際尺寸長寬高」、「耐重材質」與「實測運費」一次標示清楚，再也不用拿尺量半天還爆預算！</p>
+    </section>
+
+    <!-- 書桌剩餘空間「實測篩選器」 -->
+    <section class="filter-card">
+      <div class="filter-header">
+        <div class="filter-title">
+          <span>📐</span> 書桌剩餘空間「實測篩選器」
+        </div>
+        <button class="reset-btn" onclick="resetDimensions()">↻ 重置尺寸</button>
+      </div>
+      <p class="filter-desc">輸入你桌面上量好的剩餘空位，系統會自動標示能不能放得下！</p>
+      
+      <div class="dimension-inputs">
+        <div class="input-field">
+          <label>可容納長度 (cm)</label>
+          <input type="number" id="dim-l" value="40" oninput="checkDimensions()">
+        </div>
+        <div class="input-field">
+          <label>可容納深度/寬 (cm)</label>
+          <input type="number" id="dim-w" value="25" oninput="checkDimensions()">
+        </div>
+        <div class="input-field">
+          <label>高度限制 (cm)</label>
+          <input type="number" id="dim-h" value="30" oninput="checkDimensions()">
+        </div>
+      </div>
+
+      <div class="filter-tip">
+        💡 系統預設為宿舍標準小書桌剩餘空位：長 40 x 寬 25 x 高 30 cm，你可以自行修改上方數值。
+      </div>
+    </section>
+
+    <!-- 商品列表標題 -->
+    <div class="section-title">
+      <h3>🚀 高 CP 值小空間收納推薦</h3>
+      <span class="tip-text">點擊卡片可查看「實體情境圖」</span>
     </div>
 
-    <!-- 專案網格卡片 -->
-    <div class="projects-grid">
-      <!-- 專案卡片 1 -->
-      <article class="project-card" data-year="year1">
-        <div class="card-tag">大一 / 文學與創作</div>
-        <h3>當代文學作品賞析與小論文</h3>
-        <p>探討現代散文中的情感表達與空間意象，深入分析文本結構與修辭技巧。</p>
-        <a href="#" class="card-link">查看詳情 &rarr;</a>
+    <!-- 商品網格 (使用真實照片 1.jpg ~ 4.jpg) -->
+    <section class="products-grid">
+
+      <!-- 商品 1 -->
+      <article class="product-card" id="card-1">
+        <div class="fit-badge badge-fit" id="badge-1">✓ 完美放入</div>
+        <div class="img-wrapper">
+          <img src="1.jpg" alt="可堆疊桌上抽屜盒">
+        </div>
+        <div class="card-content">
+          <h4>可堆疊桌上抽屜盒</h4>
+          <div class="spec-tag">📏 20 × 21 × 8 cm</div>
+          <p class="desc">適合擺放保養品、文具、USB線材與小雜物，可上下堆疊不佔桌子真面目。</p>
+          <div class="card-footer">
+            <span class="price">NT$ 120</span>
+            <button class="add-cart-btn" onclick="toggleCart(1, 120, '可堆疊桌上抽屜盒', this)">+ 加入清單</button>
+          </div>
+        </div>
       </article>
 
-      <!-- 專案卡片 2 -->
-      <article class="project-card" data-year="year2">
-        <div class="card-tag">大二 / 數位行銷</div>
-        <h3>品牌社群媒體行銷企劃案</h3>
-        <p>針對特定品牌進行受眾分析、社群貼文規劃與文案撰寫，提升品牌曝光度。</p>
-        <a href="#" class="card-link">查看詳情 &rarr;</a>
+      <!-- 商品 2 -->
+      <article class="product-card" id="card-2">
+        <div class="fit-badge badge-fit" id="badge-2">✓ 完美放入</div>
+        <div class="img-wrapper">
+          <img src="2.jpg" alt="垂直雙層鐵藝置物架">
+        </div>
+        <div class="card-content">
+          <h4>垂直雙層鐵藝置物架</h4>
+          <div class="spec-tag">📏 27 × 15 × 24 cm</div>
+          <p class="desc">發揮「垂直空間」首選！下層擺重課本與筆記本，上層擺馬克杯與香水保養品。</p>
+          <div class="card-footer">
+            <span class="price">NT$ 185</span>
+            <button class="add-cart-btn" onclick="toggleCart(2, 185, '垂直雙層鐵藝置物架', this)">+ 加入清單</button>
+          </div>
+        </div>
       </article>
 
-      <!-- 專案卡片 3 -->
-      <article class="project-card" data-year="year3">
-        <div class="card-tag">大三 / 專題研究</div>
-        <h3>地方文化特色與觀光推廣專案</h3>
-        <p>結合實地田野調查與歷史脈絡整理，設計一套適合在地旅遊的推廣方案。</p>
-        <a href="#" class="card-link">查看詳情 &rarr;</a>
+      <!-- 商品 3 -->
+      <article class="product-card" id="card-3">
+        <div class="fit-badge badge-fit" id="badge-3">✓ 完美放入</div>
+        <div class="img-wrapper">
+          <img src="3.jpg" alt="多功能懸掛式文具袋">
+        </div>
+        <div class="card-content">
+          <h4>多功能懸掛式文具袋</h4>
+          <div class="spec-tag">📏 25 × 10 × 38 cm</div>
+          <p class="desc">直接掛在宿舍書桌邊緣或床頭欄桿，零占用桌面空間，適合收納剪刀、面紙與雜物。</p>
+          <div class="card-footer">
+            <span class="price">NT$ 99</span>
+            <button class="add-cart-btn" onclick="toggleCart(3, 99, '多功能懸掛式文具袋', this)">+ 加入清單</button>
+          </div>
+        </div>
       </article>
 
-      <!-- 專案卡片 4 -->
-      <article class="project-card" data-year="year4">
-        <div class="card-tag">大四 / 畢業專題</div>
-        <h3>個人 IP 建立與整合行銷畢業製作</h3>
-        <p>整合大學四年所學，從自媒體定位、內容產生到網站架設的全方位實踐。</p>
-        <a href="#" class="card-link">查看詳情 &rarr;</a>
+      <!-- 商品 4 -->
+      <article class="product-card" id="card-4">
+        <div class="fit-badge badge-fit" id="badge-4">✓ 完美放入</div>
+        <div class="img-wrapper">
+          <img src="4.jpg" alt="可折疊桌面整理籃">
+        </div>
+        <div class="card-content">
+          <h4>可折疊桌面整理籃</h4>
+          <div class="spec-tag">📏 15 × 10 × 6 cm</div>
+          <p class="desc">收納宿舍零食、面紙盒或各種充電器，不用時可完全折疊收平，搬家超方便。</p>
+          <div class="card-footer">
+            <span class="price">NT$ 55</span>
+            <button class="add-cart-btn" onclick="toggleCart(4, 55, '可折疊桌面整理籃', this)">+ 加入清單</button>
+          </div>
+        </div>
       </article>
+
+    </section>
+
+  </main>
+
+  <!-- 底部固定結算欄 (與圖一完全一致) -->
+  <footer class="bottom-bar">
+    <div class="bottom-container">
+      <div class="cart-summary-text">
+        購物車總計 (<span id="item-count">0</span> 件用品)：<br>
+        <strong id="bottom-total">NT$ 0</strong> <span id="shipping-note">(含運費 NT$60)</span>
+      </div>
+      <button class="checkout-btn" id="checkout-btn">✓ 檢查 500 元預算</button>
     </div>
-  </section>
-
-  <!-- 頁尾 -->
-  <footer id="contact">
-    <p>&copy; 2026 Personal Portfolio. All Rights Reserved.</p>
   </footer>
 
-  <script src="dist/app.js"></script>
+  <script>
+    const products = [
+      { id: 1, l: 20, w: 21, h: 8 },
+      { id: 2, l: 27, w: 15, h: 24 },
+      { id: 3, l: 25, w: 10, h: 38 },
+      { id: 4, l: 15, w: 10, h: 6 }
+    ];
+
+    let cart = [];
+
+    function checkDimensions() {
+      const l = parseFloat(document.getElementById('dim-l').value) || 0;
+      const w = parseFloat(document.getElementById('dim-w').value) || 0;
+      const h = parseFloat(document.getElementById('dim-h').value) || 0;
+
+      products.forEach(p => {
+        const badge = document.getElementById(`badge-${p.id}`);
+        if (p.l <= l && p.w <= w && p.h <= h) {
+          badge.textContent = "✓ 完美放入";
+          badge.className = "fit-badge badge-fit";
+        } else {
+          badge.textContent = "✕ 尺寸過大";
+          badge.className = "fit-badge badge-over";
+        }
+      });
+    }
+
+    function resetDimensions() {
+      document.getElementById('dim-l').value = 40;
+      document.getElementById('dim-w').value = 25;
+      document.getElementById('dim-h').value = 30;
+      checkDimensions();
+    }
+
+    function toggleCart(id, price, name, btn) {
+      const idx = cart.findIndex(item => item.id === id);
+      if (idx > -1) {
+        cart.splice(idx, 1);
+        btn.textContent = "+ 加入清單";
+        btn.classList.remove('selected');
+      } else {
+        cart.push({ id, price, name });
+        btn.textContent = "✓ 已選擇";
+        btn.classList.add('selected');
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const shipping = parseFloat(document.getElementById('shipping-select').value) || 0;
+      const itemsTotal = cart.reduce((sum, item) => sum + item.price, 0);
+      const grandTotal = cart.length > 0 ? (itemsTotal + shipping) : 0;
+
+      document.getElementById('total-price').innerHTML = `NT$ ${grandTotal} <small>/ 500元</small>`;
+      document.getElementById('bottom-total').textContent = `NT$ ${grandTotal}`;
+      document.getElementById('item-count').textContent = cart.length;
+      document.getElementById('shipping-note').textContent = cart.length > 0 ? `(含運費 NT$${shipping})` : `(尚未選擇商品)`;
+
+      const headerBtn = document.getElementById('cart-header-btn');
+      const checkoutBtn = document.getElementById('checkout-btn');
+
+      if (cart.length > 0) {
+        headerBtn.textContent = `🛒 已選 ${cart.length} 件`;
+        headerBtn.classList.add('has-items');
+      } else {
+        headerBtn.textContent = `🛒 未選購`;
+        headerBtn.classList.remove('has-items');
+      }
+
+      if (grandTotal > 500) {
+        checkoutBtn.textContent = `⚠️ 超出預算 $${grandTotal - 500} 元`;
+        checkoutBtn.style.backgroundColor = '#e74c3c';
+      } else {
+        checkoutBtn.textContent = `✓ 檢查 500 元預算`;
+        checkoutBtn.style.backgroundColor = '#00b894';
+      }
+    }
+
+    checkDimensions();
+  </script>
 </body>
 </html>
