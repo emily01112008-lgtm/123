@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>時光刻度 Time Scale | 刻劃時光的經典 典藏歲月的非凡</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Serif+TC:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0B0F19',      // 深邃夜藍黑
+                            card: '#111827',      // 卡片深背景
+                            accent: '#C5A059',    // 香檳金
+                            lightGold: '#E6CA65', // 明亮金
+                            hoverGold: '#B38E46', // 深香檳金
+                            muted: '#94A3B8',     // 柔和灰
+                            surface: '#1F2937'    // 表面層結構
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cinzel', 'Noto Serif TC', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'Noto Sans TC', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* 自訂細節樣式與滾動條 */
+        body {
+            background-color: #0B0F19;
+            color: #F8FAFC;
+            font-family: 'Plus Jakarta Sans', 'Noto Serif TC', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF0D0 0%, #C5A059 50%, #9A7B38 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border-glow {
+            transition: all 0.4s ease;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+        }
+
+        .gold-border-glow:hover {
+            border-color: rgba(197, 160, 89, 0.7);
+            box-shadow: 0 10px 30px -10px rgba(197, 160, 89, 0.25);
+            transform: translateY(-4px);
+        }
+
+        /* 滾動條動態樣式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1F2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C5A059;
+        }
+
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-accent selection:text-black">
+
+    <!-- 頂部導覽列 Header -->
+    <header class="fixed top-0 left-0 w-full z-40 transition-all duration-300 glass-panel border-b border-brand-accent/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- 品牌標誌 Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full border border-brand-accent/40 flex items-center justify-center group-hover:border-brand-accent transition-colors">
+                    <i class="fa-solid font-serif text-brand-accent text-lg">T</i>
+                </div>
+                <div>
+                    <span class="font-serif text-xl tracking-widest block font-bold gold-gradient-text">時光刻度</span>
+                    <span class="text-[9px] tracking-[0.25em] text-brand-muted uppercase block font-sans">TIME SCALE</span>
+                </div>
+            </a>
+
+            <!-- 主選單 Navigation -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#home" class="hover:text-brand-accent transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-accent hover:after:w-full after:transition-all">首頁 Home</a>
+                <a href="#collection" class="hover:text-brand-accent transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-accent hover:after:w-full after:transition-all">腕錶系列 Collection</a>
+                <a href="#craftsmanship" class="hover:text-brand-accent transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-accent hover:after:w-full after:transition-all">製錶工藝 Craftsmanship</a>
+                <a href="#about" class="hover:text-brand-accent transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-accent hover:after:w-full after:transition-all">關於品牌 About Us</a>
+            </nav>
+
+            <!-- 購物車與操作功能 -->
+            <div class="flex items-center gap-5">
+                <button id="open-cart-btn" class="relative p-2 text-slate-300 hover:text-brand-accent transition-colors focus:outline-none" aria-label="查看購物車">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-brand-accent text-slate-950 font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+
+                <!-- 行動裝置選單按鈕 -->
+                <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-brand-accent focus:outline-none p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-800 bg-brand-dark/95 px-6 py-4 space-y-3">
+            <a href="#home" class="block text-slate-300 hover:text-brand-accent py-2 border-b border-slate-800/50">首頁 Home</a>
+            <a href="#collection" class="block text-slate-300 hover:text-brand-accent py-2 border-b border-slate-800/50">腕錶系列 Collection</a>
+            <a href="#craftsmanship" class="block text-slate-300 hover:text-brand-accent py-2 border-b border-slate-800/50">製錶工藝 Craftsmanship</a>
+            <a href="#about" class="block text-slate-300 hover:text-brand-accent py-2">關於品牌 About Us</a>
+        </div>
+    </header>
+
+    <!-- Hero Section 主頁橫幅 -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!--  背景裝飾光芒與紋理 -->
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900/80 via-brand-dark to-brand-dark z-0"></div>
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-brand-accent/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center py-16">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-accent/30 bg-brand-accent/5 text-brand-accent text-xs tracking-widest uppercase mb-8">
+                <i class="fa-regular fa-clock text-xs"></i> 頂級瑞士與現代精密技術
+            </div>
+            
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl tracking-wide font-medium text-slate-100 leading-tight mb-6">
+                刻劃時光的經典<br>
+                <span class="gold-gradient-text font-semibold">典藏歲月的非凡</span>
+            </h1>
+
+            <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed mb-10">
+                每枚「時光刻度」腕錶皆承載著百年精湛工藝與當代美學哲理。不論是正裝雅緻、深海潛航或是機械鏤空，皆為追求卓越的您而生。
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#collection" class="w-full sm:w-auto px-8 py-4 rounded-md bg-gradient-to-r from-brand-accent to-brand-hoverGold text-slate-950 font-semibold tracking-wider hover:brightness-110 transition-all shadow-lg shadow-brand-accent/20 flex items-center justify-center gap-2">
+                    探索完整系列 <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="#craftsmanship" class="w-full sm:w-auto px-8 py-4 rounded-md border border-slate-700 hover:border-brand-accent text-slate-300 hover:text-brand-accent transition-all">
+                    了解品牌製錶工藝
+                </a>
+            </div>
+        </div>
+
+        <!-- 下拉提示箭頭 -->
+        <a href="#collection" class="absolute bottom-8 left-1/2 -translate-x-1/2 text-slate-500 hover:text-brand-accent transition-colors animate-bounce">
+            <i class="fa-solid fa-chevron-down text-lg"></i>
+        </a>
+    </section>
+
+    <!-- 產品展示牆 Product Collection Grid -->
+    <section id="collection" class="py-24 bg-slate-950/50 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs uppercase tracking-[0.3em] text-brand-accent mb-3 font-semibold">Exquisite Timepieces</h2>
+                <h3 class="font-serif text-3xl sm:text-4xl text-slate-100 font-medium">旗艦腕錶全系列</h3>
+                <div class="w-16 h-[2px] bg-brand-accent/50 mx-auto mt-4"></div>
+            </div>
+
+            <!-- 手錶商品網格 -->
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Javascript 將自動渲染 10 張卡片 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 品牌價值與工藝展示 Craftsmanship Section -->
+    <section id="craftsmanship" class="py-24 border-t border-slate-800/60 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <span class="text-xs uppercase tracking-[0.3em] text-brand-accent font-semibold">Uncompromising Quality</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-slate-100 leading-snug">
+                        千錘百煉，<br>微米之間的極致追求
+                    </h2>
+                    <p class="text-slate-400 font-light leading-relaxed">
+                        「時光刻度」堅持每一枚腕錶均經由資深鐘錶工匠數百道工序親手組裝與測試。從藍寶石水晶鏡面的微弧拋光，到316L精鋼與航太級鈦金屬的鍛造，我們確保時間的每一次跳動都精準無誤。
+                    </p>
+                    <div class="grid grid-cols-2 gap-6 pt-4">
+                        <div class="border-l-2 border-brand-accent pl-4 space-y-1">
+                            <h4 class="font-serif text-xl text-slate-200">±2 秒 / 日</h4>
+                            <p class="text-xs text-slate-400">天文台級極致精準度</p>
+                        </div>
+                        <div class="border-l-2 border-brand-accent pl-4 space-y-1">
+                            <h4 class="font-serif text-xl text-slate-200">300 米</h4>
+                            <p class="text-xs text-slate-400">深海潛航專業級防水</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-brand-card p-6 rounded-lg border border-slate-800 space-y-3">
+                        <i class="fa-solid fa-gem text-brand-accent text-2xl"></i>
+                        <h3 class="font-serif text-lg text-slate-200">藍寶石鏡面</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">高硬度防刮鍍膜，確保數十年依舊清晰透亮。</p>
+                    </div>
+                    <div class="bg-brand-card p-6 rounded-lg border border-slate-800 space-y-3 mt-6">
+                        <i class="fa-solid fa-microchip text-brand-accent text-2xl"></i>
+                        <h3 class="font-serif text-lg text-slate-200">自製精密機芯</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">高頻率擺輪運轉，提供持久動力儲存與穩定性。</p>
+                    </div>
+                    <div class="bg-brand-card p-6 rounded-lg border border-slate-800 space-y-3">
+                        <i class="fa-solid fa-feather text-brand-accent text-2xl"></i>
+                        <h3 class="font-serif text-lg text-slate-200">航太級金屬</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">選用低過敏鈦金屬與316L精鋼，輕盈無負擔。</p>
+                    </div>
+                    <div class="bg-brand-card p-6 rounded-lg border border-slate-800 space-y-3 mt-6">
+                        <i class="fa-solid fa-shield-halved text-brand-accent text-2xl"></i>
+                        <h3 class="font-serif text-lg text-slate-200">全球五年保固</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">提供完整的售後洗油與定期保養檢測服務。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 商品詳情 Modal (Pop-up) -->
+    <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-brand-card border border-brand-accent/30 rounded-xl max-w-3xl w-full overflow-hidden shadow-2xl transform scale-95 transition-all duration-300 relative text-slate-200">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-slate-400 hover:text-white z-10 w-8 h-8 rounded-full bg-slate-900/60 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="modal-content" class="grid grid-cols-1 md:grid-cols-2">
+                <!-- Javascript 動態填入產品資訊 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 購物車 Drawer (Sidebar) -->
+    <div id="cart-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-brand-card border-l border-brand-accent/20 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-bag-shopping text-brand-accent"></i>
+                <h3 class="font-serif text-lg font-medium">您的購物車</h3>
+            </div>
+            <button id="close-cart-btn" class="text-slate-400 hover:text-white p-1">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <!-- 購物車項目列表 -->
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <!-- 購物車空狀態 / 商品動態生成 -->
+        </div>
+
+        <!-- 購物車底部結帳區 -->
+        <div class="p-6 border-t border-slate-800 bg-slate-950/80 space-y-4">
+            <div class="flex justify-between items-center text-sm">
+                <span class="text-slate-400">小計 (Subtotal)</span>
+                <span id="cart-subtotal" class="font-serif text-xl gold-gradient-text font-bold">NT$ 0</span>
+            </div>
+            <button id="checkout-btn" class="w-full py-3 rounded bg-gradient-to-r from-brand-accent to-brand-hoverGold text-slate-950 font-bold tracking-wider hover:brightness-110 transition-all flex items-center justify-center gap-2">
+                前往安全結帳 <i class="fa-solid fa-lock text-xs"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 頁尾 Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 text-slate-400 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <!-- 品牌簡介 -->
+                <div class="space-y-4 md:col-span-1">
+                    <div class="flex items-center gap-2">
+                        <span class="font-serif text-xl gold-gradient-text font-bold">時光刻度</span>
+                    </div>
+                    <p class="text-xs leading-relaxed text-slate-500">
+                        秉承極致工藝，將時間演繹為腕間的藝術品。每一刻，皆值得被典藏。
+                    </p>
+                </div>
+
+                <!-- 快速連結 -->
+                <div>
+                    <h4 class="font-serif text-sm text-slate-200 font-semibold mb-4 tracking-wider">探索專區</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#collection" class="hover:text-brand-accent transition-colors">紳士正裝系列</a></li>
+                        <li><a href="#collection" class="hover:text-brand-accent transition-colors">專業潛水手錶</a></li>
+                        <li><a href="#collection" class="hover:text-brand-accent transition-colors">鏤空機械工藝</a></li>
+                        <li><a href="#collection" class="hover:text-brand-accent transition-colors">極簡都會風尚</a></li>
+                    </ul>
+                </div>
+
+                <!-- 顧客服務 -->
+                <div>
+                    <h4 class="font-serif text-sm text-slate-200 font-semibold mb-4 tracking-wider">尊榮服務</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" class="hover:text-brand-accent transition-colors">全球五年保固條款</a></li>
+                        <li><a href="#" class="hover:text-brand-accent transition-colors">腕錶保養與洗油指導</a></li>
+                        <li><a href="#" class="hover:text-brand-accent transition-colors">預約門市鑑賞</a></li>
+                        <li><a href="#" class="hover:text-brand-accent transition-colors">常見問題 FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- 訂閱電子報 -->
+                <div>
+                    <h4 class="font-serif text-sm text-slate-200 font-semibold mb-4 tracking-wider">獲得最新發表資訊</h4>
+                    <p class="text-xs text-slate-500 mb-3">訂閱以獲取限量款式開賣通知與獨家鑑賞邀請。</p>
+                    <form onsubmit="event.preventDefault(); alert('感謝您的訂閱！我們將第一時間發送最新消息。');" class="flex">
+                        <input type="email" placeholder="您的電子郵件..." required class="bg-slate-900 border border-slate-800 text-xs text-slate-200 px-3 py-2 rounded-l focus:outline-none focus:border-brand-accent flex-1">
+                        <button type="submit" class="bg-brand-accent text-slate-950 font-bold px-4 text-xs rounded-r hover:bg-brand-hoverGold transition-colors">訂閱</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-900 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-600 gap-4">
+                <p>&copy; 2026 時光刻度 Time Scale Ltd. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-slate-400">隱私權政策</a>
+                    <a href="#" class="hover:text-slate-400">服務條款</a>
+                    <a href="#" class="hover:text-slate-400">Cookie 設定</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 網頁應用程式核心邏輯 Script -->
+    <script>
+        // 10 款手錶產品完整資料結構
+        const products = [
+            {
+                id: 'W-001',
+                imgCode: '01',
+                name: 'Aethel Classic 紳士經典',
+                style: '商務正裝',
+                price: 6800,
+                desc: '316L精鋼錶殼、藍寶石水晶玻璃、義大利真皮錶帶，搭載高精度自動上鍊機芯，演繹低調內斂的紳士品味。',
+                specs: ['316L精鋼', '藍寶石鏡面', '義大利真皮帶', '自動上鍊機芯']
+            },
+            {
+                id: 'W-002',
+                imgCode: '02',
+                name: 'Abyss Diver 深海征服者',
+                style: '專業潛水',
+                price: 12500,
+                desc: '300米防水深度、陶瓷單向旋轉錶圈、Super-LumiNova夜光塗層，極端環境下依舊清晰讀時。',
+                specs: ['300M深潛防水', '陶瓷計時錶圈', '強效超級夜光', '排氦閥門']
+            },
+            {
+                id: 'W-003',
+                imgCode: '03',
+                name: 'Nordic Minimal 北歐極簡',
+                style: '都會日常',
+                price: 4500,
+                desc: '超薄霧面錶盤、無刻度純粹設計、快拆式米蘭編織網帶，展現純粹俐落的現代美學。',
+                specs: ['6.5mm超薄錶身', '霧面啞光錶盤', '快拆米蘭網帶', '石英精密機芯']
+            },
+            {
+                id: 'W-004',
+                imgCode: '04',
+                name: 'Chronos Apex 疾風競速',
+                style: '三眼計速',
+                price: 9200,
+                desc: '碳纖維紋理錶盤、計時碼錶功能、防刮礦物玻璃，為追求速度與精準的競速愛好者打造。',
+                specs: ['碳纖維錶盤', '三眼計數碼錶', '賽車打孔皮帶', '測速儀錶圈']
+            },
+            {
+                id: 'W-005',
+                imgCode: '05',
+                name: 'Heritage 1968 復古文藝',
+                style: '復古懷舊',
+                price: 5600,
+                desc: '拱形復古錶鏡、羅馬數字時標、仿舊油蠟皮錶帶，將上世紀六零年代的優雅時光完美重現。',
+                specs: ['復古拱形玻璃', '藍鋼針細節', '手工油蠟皮帶', '經典小秒盤']
+            },
+            {
+                id: 'W-006',
+                imgCode: '06',
+                name: 'Titanium Shield 鈦金極客',
+                style: '輕量科技',
+                price: 14800,
+                desc: '航太級鈦金屬錶身（比鋼輕40%且親膚抗敏）、抗磁結構、雙曆顯示，兼具科技感與日常配戴舒適度。',
+                specs: ['Gr.5 航太鈦金屬', '高抗磁結構', '雙曆顯示窗', '輕量親膚防敏']
+            },
+            {
+                id: 'W-007',
+                imgCode: '07',
+                name: 'Aura Glow 璀璨星河',
+                style: '時尚輕奢',
+                price: 7500,
+                desc: '漸層星空閃耀錶盤、鑲嵌奧地利水晶刻度、精緻細鍊帶，點綴女性腕間的奢華光芒。',
+                specs: ['砂金石漸層錶盤', '施華洛世奇晶鑽', '玫瑰金鍍層', '精緻細緻鍊帶']
+            },
+            {
+                id: 'W-008',
+                imgCode: '08',
+                name: 'Terra Nomad 荒野遊俠',
+                style: '戶外探險',
+                price: 3900,
+                desc: '強化樹脂防震外殼、指南針方位錶圈、高強度尼龍編織帶，專為戶外徒步與野營設計。',
+                specs: ['高防震硬化外殼', '方位角指南錶圈', '軍規尼龍編織帶', '100M防水強化']
+            },
+            {
+                id: 'W-009',
+                imgCode: '09',
+                name: 'Skeleton Prime 鏤空之魂',
+                style: '機械工藝',
+                price: 18500,
+                desc: '雙面全透視鏤空機械錶盤，完美展現齒輪精密運轉的機械美學，收藏級工藝之作。',
+                specs: ['全透視雙面鏤空', '80小時動力儲存', '魚鱗紋金屬雕花', '藍寶石通透錶背']
+            },
+            {
+                id: 'W-010',
+                imgCode: '10',
+                name: 'Eco Smart 脈動智行',
+                style: '智慧運動',
+                price: 5200,
+                desc: 'AMOLED高畫質觸控螢幕、全天候心率血氧監測、50米防水與超長14天續航，智慧與時尚的完美結合。',
+                specs: ['AMOLED高解析螢幕', '心率血氧實時監測', '50M防水等級', '14天長效續航']
+            }
+        ];
+
+        // 購物車 State
+        let cart = [];
+
+        // DOM 元素引用
+        const productGrid = document.getElementById('product-grid');
+        const cartBadge = document.getElementById('cart-badge');
+        const cartDrawer = document.getElementById('cart-drawer');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartSubtotal = document.getElementById('cart-subtotal');
+        const productModal = document.getElementById('product-modal');
+        const modalContent = document.getElementById('modal-content');
+
+        // 渲染商品網格
+        function renderProducts() {
+            productGrid.innerHTML = products.map(product => `
+                <div class="bg-brand-card rounded-xl overflow-hidden gold-border-glow flex flex-col group">
+                    <!-- 圖片容器 (圖片路徑: images/01.jpg ~ images/10.jpg) -->
+                    <div class="relative overflow-hidden aspect-square bg-slate-900 cursor-pointer" onclick="openModal('${product.id}')">
+                        <img src="images/${product.imgCode}.jpg" 
+                             alt="${product.name}" 
+                             class="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x400/1e293b/c5a059?text=${product.id}';">
+                        <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md border border-brand-accent/30 text-brand-accent text-[11px] font-mono px-2.5 py-1 rounded">
+                            ${product.id}
+                        </span>
+                        <span class="absolute top-3 right-3 bg-brand-accent/20 border border-brand-accent/40 text-brand-accent text-[11px] px-2 py-0.5 rounded-full">
+                            ${product.style}
+                        </span>
+                    </div>
+
+                    <!-- 產品資訊區域 -->
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="font-serif text-lg font-medium text-slate-100 group-hover:text-brand-accent transition-colors cursor-pointer" onclick="openModal('${product.id}')">
+                                ${product.name}
+                            </h3>
+                            <p class="text-slate-400 text-xs line-clamp-2 mt-2 leading-relaxed font-light">
+                                ${product.desc}
+                            </p>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-slate-500 block uppercase">Price</span>
+                                <span class="font-serif text-lg gold-gradient-text font-bold">NT$ ${product.price.toLocaleString()}</span>
+                            </div>
+                            <button onclick="addToCart('${product.id}')" class="px-3.5 py-2 rounded bg-slate-800 hover:bg-brand-accent text-slate-200 hover:text-slate-950 transition-all text-xs font-semibold flex items-center gap-1.5">
+                                <i class="fa-solid fa-cart-plus"></i> 加入
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 開啟詳情 Modal
+        function openModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            modalContent.innerHTML = `
+                <div class="aspect-square bg-slate-900 relative">
+                    <img src="images/${product.imgCode}.jpg" alt="${product.name}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/500x500/1e293b/c5a059?text=${product.id}';">
+                </div>
+                <div class="p-6 md:p-8 flex flex-col justify-between space-y-6">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-brand-accent font-mono text-xs border border-brand-accent/30 px-2 py-0.5 rounded">${product.id}</span>
+                            <span class="text-slate-400 text-xs">${product.style}</span>
+                        </div>
+                        <h2 class="font-serif text-2xl text-slate-100 font-medium mb-3">${product.name}</h2>
+                        <p class="text-slate-300 text-sm leading-relaxed font-light mb-4">${product.desc}</p>
+                        
+                        <div class="space-y-2">
+                            <h4 class="text-xs text-brand-accent uppercase tracking-wider font-semibold">產品重點規格</h4>
+                            <div class="grid grid-cols-2 gap-2">
+                                ${product.specs.map(spec => `<span class="text-xs text-slate-400 flex items-center gap-1.5"><i class="fa-solid fa-check text-[10px] text-brand-accent"></i> ${spec}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-slate-500 block">售價 (TAX INCL.)</span>
+                            <span class="font-serif text-2xl gold-gradient-text font-bold">NT$ ${product.price.toLocaleString()}</span>
+                        </div>
+                        <button onclick="addToCart('${product.id}'); closeModal();" class="px-6 py-3 rounded bg-gradient-to-r from-brand-accent to-brand-hoverGold text-slate-950 font-bold text-sm hover:brightness-110 transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-bag-shopping"></i> 放入購物車
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            productModal.classList.remove('opacity-0', 'pointer-events-none');
+            productModal.querySelector('div').classList.remove('scale-95');
+            productModal.querySelector('div').classList.add('scale-100');
+        }
+
+        // 關閉 Modal
+        function closeModal() {
+            productModal.classList.add('opacity-0', 'pointer-events-none');
+            productModal.querySelector('div').classList.remove('scale-100');
+            productModal.querySelector('div').classList.add('scale-95');
+        }
+
+        // 購物車邏輯 Functions
+        function addToCart(productId) {
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                const product = products.find(p => p.id === productId);
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+            openCart();
+        }
+
+        function updateQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== productId);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            // 計算總數量
+            const totalCount = cart.reduce((sum, item) => sum += item.quantity, 0);
+            if (totalCount > 0) {
+                cartBadge.textContent = totalCount;
+                cartBadge.classList.remove('hidden');
+            } else {
+                cartBadge.classList.add('hidden');
+            }
+
+            // 計算總價
+            const totalAmount = cart.reduce((sum, item) => sum += (item.price * item.quantity), 0);
+            cartSubtotal.textContent = `NT$ ${totalAmount.toLocaleString()}`;
+
+            // 渲染購物車內列表
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-12 text-slate-500 space-y-3">
+                        <i class="fa-solid fa-box-open text-4xl text-slate-700"></i>
+                        <p class="text-sm">您的購物車目前是空的</p>
+                    </div>
+                `;
+            } else {
+                cartItemsContainer.innerHTML = cart.map(item => `
+                    <div class="flex items-center gap-4 bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+                        <img src="images/${item.imgCode}.jpg" alt="${item.name}" class="w-16 h-16 object-cover rounded bg-slate-950" onerror="this.onerror=null; this.src='https://placehold.co/100x100/1e293b/c5a059?text=${item.id}';">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-medium text-slate-200 truncate">${item.name}</h4>
+                            <span class="text-xs gold-gradient-text font-serif">NT$ ${item.price.toLocaleString()}</span>
+                            
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="updateQuantity('${item.id}', -1)" class="w-5 h-5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs flex items-center justify-center">-</button>
+                                <span class="text-xs text-slate-200 font-mono">${item.quantity}</span>
+                                <button onclick="updateQuantity('${item.id}', 1)" class="w-5 h-5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs flex items-center justify-center">+</button>
+                            </div>
+                        </div>
+                        <button onclick="updateQuantity('${item.id}', -${item.quantity})" class="text-slate-500 hover:text-red-400 p-1 text-xs">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function openCart() {
+            cartDrawer.classList.remove('translate-x-full');
+        }
+
+        function closeCart() {
+            cartDrawer.classList.add('translate-x-full');
+        }
+
+        // 事件監聽 Event Listeners
+        document.getElementById('open-cart-btn').addEventListener('click', openCart);
+        document.getElementById('close-cart-btn').addEventListener('click', closeCart);
+        document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+
+        // 點擊 Modal 外部背景關閉
+        productModal.addEventListener('click', (e) => {
+            if (e.target === productModal) closeModal();
+        });
+
+        // 行動選單開關
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // 模擬結帳
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('您的購物車為空，請先選擇商品！');
+                return;
+            }
+            alert('感謝您的訂購！系統已成功收到訂單，專人將盡快與您聯繫進行確認。');
+            cart = [];
+            updateCartUI();
+            closeCart();
+        });
+
+        // 初始化
+        window.onload = function() {
+            renderProducts();
+            updateCartUI();
+        }
+    </script>
+</body>
+</html>
