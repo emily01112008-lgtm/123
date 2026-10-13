@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>呆呆怪獸糖果屋 - 萌萌器官糖果專賣店</title>
+  <style>
+    :root {
+      --bg-color: #fff0f5;
+      --card-bg: #ffffff;
+      --accent-color: #ff69b4;
+      --accent-hover: #ff1493;
+      --text-color: #4a4a4a;
+      --border-color: #ffc0cb;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      width: 100%;
+      padding: 30px 0;
+      text-align: center;
+      border-bottom: 4px dashed #ffb6c1;
+      box-shadow: 0 4px 15px rgba(255, 182, 193, 0.4);
+    }
+
+    h1 {
+      margin: 0;
+      color: #d81b60;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 0px #fff;
+    }
+
+    p.subtitle {
+      margin-top: 8px;
+      color: #885566;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 3px solid var(--border-color);
+      box-shadow: 0 8px 20px rgba(255, 192, 203, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      padding: 18px;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(255, 105, 180, 0.4);
+    }
+
+    /* Ｑ版可愛插畫視覺預覽框 */
+    .organ-preview {
+      width: 100%;
+      height: 160px;
+      background: radial-gradient(circle, #ffe4e1 0%, #fff0f5 100%);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 2px dashed #ffb6c1;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+
+    .organ-visual {
+      font-size: 70px;
+      filter: drop-shadow(0 4px 8px rgba(255, 105, 180, 0.4));
+      animation: bounceOrgan 2s infinite ease-in-out;
+    }
+
+    @keyframes bounceOrgan {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .organ-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #ff69b4;
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      margin: 5px 0 6px 0;
+      color: #c71585;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      color: #666;
+      flex-grow: 1;
+      line-height: 1.4;
+      margin: 0 0 12px 0;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 2px dotted #ffe4e1;
+      padding-top: 10px;
+      margin-top: auto;
+    }
+
+    .price {
+      font-size: 1.25rem;
+      color: #ff1493;
+      font-weight: bold;
+    }
+
+    .add-to-cart-btn {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+      color: #fff;
+      border: none;
+      padding: 9px 18px;
+      font-size: 0.9rem;
+      border-radius: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.1s, opacity 0.2s;
+      box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
+    }
+
+    .add-to-cart-btn:hover {
+      opacity: 0.9;
+    }
+
+    .add-to-cart-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* 購物車按鈕 */
+    .cart-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ffffff;
+      border: 3px solid #ff69b4;
+      color: #d81b60;
+      padding: 10px 22px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+      transition: background 0.2s;
+    }
+
+    .cart-btn:hover {
+      background-color: #fff0f5;
+    }
+
+    /* 購物車側邊欄 */
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 380px;
+      height: 100%;
+      background-color: #ffffff;
+      border-left: 4px solid #ffb6c1;
+      box-shadow: -10px 0 30px rgba(255, 192, 203, 0.5);
+      z-index: 1000;
+      transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .cart-drawer.open {
+      right: 0;
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px dashed #ffb6c1;
+      padding-bottom: 15px;
+    }
+
+    .drawer-header h2 {
+      margin: 0;
+      color: #d81b60;
+      font-size: 1.3rem;
+    }
+
+    .close-drawer {
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+
+    .close-drawer:hover {
+      color: #ff1493;
+    }
+
+    .cart-items {
+      flex-grow: 1;
+      overflow-y: auto;
+      margin: 15px 0;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background-color: #fff5f8;
+      padding: 10px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 2px solid #ffc0cb;
+    }
+
+    .cart-item-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      background: #ffe4e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+      border: 1px solid #ffb6c1;
+    }
+
+    .cart-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex-grow: 1;
+    }
+
+    .cart-item-title {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #4a4a4a;
+    }
+
+    .cart-item-price {
+      font-size: 0.85rem;
+      color: #ff1493;
+      font-weight: bold;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .qty-btn {
+      background-color: #ffb6c1;
+      color: #fff;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .qty-btn:hover {
+      background-color: #ff69b4;
+    }
+
+    .qty-num {
+      font-size: 0.9rem;
+      font-weight: bold;
+      min-width: 18px;
+      text-align: center;
+      color: #4a4a4a;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      color: #ff69b4;
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 5px;
+    }
+
+    .remove-btn:hover {
+      color: #ff1493;
+    }
+
+    .drawer-footer {
+      border-top: 2px dashed #ffb6c1;
+      padding-top: 15px;
+    }
+
+    .total-price {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.15rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #4a4a4a;
+    }
+
+    .checkout-btn {
+      background: linear-gradient(135deg, #a8ff78 0%, #78ffd6 100%);
+      color: #2e7d32;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 15px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(120, 255, 214, 0.4);
+      transition: opacity 0.2s;
+    }
+
+    .checkout-btn:hover {
+      opacity: 0.9;
+    }
+
+    .empty-cart-msg {
+      text-align: center;
+      color: #aaa;
+      margin-top: 60px;
+    }
+
+    /* --- 血刀特效層 --- */
+    .slash-container {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .flying-knife {
+      position: absolute;
+      font-size: 60px;
+      animation: brutalSlash 0.35s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+      filter: drop-shadow(0 0 15px #ff0000);
+    }
+
+    @keyframes brutalSlash {
+      0% {
+        opacity: 0;
+        transform: translate(var(--startX), var(--startY)) rotate(-75deg) scale(1.6);
+      }
+      40% {
+        opacity: 1;
+        transform: translate(var(--midX), var(--midY)) rotate(10deg) scale(1.3);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--endX), var(--endY)) rotate(60deg) scale(0.7);
+      }
+    }
+
+    .blood-splatter {
+      position: absolute;
+      background-color: #e60000;
+      border-radius: 50%;
+      animation: heavyBlood 0.5s ease-out forwards;
+      box-shadow: 0 0 8px #990000;
+    }
+
+    @keyframes heavyBlood {
+      0% {
+        transform: translate(0, 0) scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--bX), var(--bY)) scale(0.2);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>💖 呆呆怪獸糖果屋 - 萌萌器官糖果專賣店 🍬</h1>
+    <p class="subtitle">超療癒 Q 版器官造型軟糖，一口咬下甜蜜爆表！</p>
+  </header>
+
+  <!-- 購物車按鈕 -->
+  <button class="cart-btn" id="cartToggleBtn">
+    🛍️ 購物車 <span id="cart-count">0</span>
+  </button>
+
+  <!-- 購物車側邊欄 -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header">
+      <h2>🎀 您的甜心糖果籃</h2>
+      <button class="close-drawer" id="closeDrawerBtn">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItemsContainer">
+      <div class="empty-cart-msg">糖果籃目前空空如也唷～</div>
+    </div>
+    <div class="drawer-footer" id="drawerFooter" style="display: none;">
+      <div class="total-price">
+        <span>總金額：</span>
+        <span id="totalAmount">NT$ 0</span>
+      </div>
+      <button class="checkout-btn" onclick="alert('下單成功！可愛小精靈正在為您打包糖果～ ✨')">前往結帳</button>
+    </div>
+  </div>
+
+  <!-- 20 款可愛器官糖果網格 -->
+  <div class="container" id="productGrid"></div>
+
+  <script>
+    // 20 款不重複的 Q 版可愛插畫器官糖果資料庫
+    const products = [
+      { id: "1", name: "Q版草莓爆漿眼球糖", price: 120, tag: "人氣No.1", desc: "圓滾滾大眼，咬下去有酸甜草莓果醬流出來！", icon: "👁️" },
+      { id: "2", name: "粉紅愛心跳動心臟軟糖", price: 150, tag: "超Ｑ彈", desc: "Q彈扎實的愛心造型，內餡是濃郁黑櫻桃風味。", icon: "🫀" },
+      { id: "3", name: "星星葡萄腦漿QQ糖", price: 180, tag: "跳跳糖感", desc: "大腦造型搭配葡萄跳跳糖，在嘴裡辦派對！", icon: "🧠" },
+      { id: "4", name: "薄荷清涼小雙肺軟糖", price: 135, tag: "清爽解膩", desc: "天然薄荷腦製作，吃完口氣清新一整天。", icon: "🫁" },
+      { id: "5", name: "黑醋栗小熊肝臟軟糖", price: 145, tag: "香甜濃郁", desc: "扎實有嚼勁，微甜的黑醋栗與覆盆子香氣。", icon: "🥩" },
+      { id: "6", name: "草莓果醬萌爪斷指軟糖", price: 99, tag: "搞怪必備", desc: "可愛又帶點趣味的造型，沾滿草莓果醬。", icon: "🤌" },
+      { id: "7", name: "繽紛寶石雙子腎軟糖", price: 130, tag: "雙倍口感", desc: "晶瑩剔透的雙腎造型，內含跳跳糖結晶。", icon: "🫘" },
+      { id: "8", name: "酸甜蔓越莓胃囊軟糖", price: 140, tag: "酸V好滋味", desc: "QQ外皮包裹著超開胃的蔓越莓夾心。", icon: "🫧" },
+      { id: "9", name: "濃醇黑巧覆盆子脾臟", price: 125, tag: "大人系甜點", desc: "滑順黑巧克力搭配酸甜覆盆子流心。", icon: "🍫" },
+      { id: "10", name: "萊姆檸檬爆漿小膽囊", price: 110, tag: "酸甜清爽", desc: "清新檸檬風味，咬下去瞬間活力滿分。", icon: "🍋" },
+      { id: "11", name: "彩虹QQ脊椎骨軟糖", price: 190, tag: "超長拉絲", desc: "節節分明的可愛骨節，超Q彈好咀嚼。", icon: "🦴" },
+      { id: "12", name: "螺旋彩帶小腸軟糖", price: 160, tag: "趣味好玩", desc: "像彩帶一樣可以拉長享用的美味軟糖。", icon: "〰️" },
+      { id: "13", name: "藍莓黑加侖大腸軟糖", price: 155, tag: "果香濃郁", desc: "獨特的捲捲造型，滿口濃郁藍莓香。", icon: "🌀" },
+      { id: "14", name: "微笑骷髏頭脆皮軟糖", price: 170, tag: "造型可愛", desc: "外層糖衣脆脆的，內芯超級Q軟。", icon: "💀" },
+      { id: "15", name: "草莓覆盆子耳廓軟糖", price: 95, tag: "精緻小點", desc: "軟骨QQ口感，搭配酸甜莓果醬。", icon: "👂" },
+      { id: "16", name: "草莓牛奶小舌頭軟糖", price: 105, tag: "香濃滑順", desc: "香甜的草莓牛奶風味，口感超綿密。", icon: "👅" },
+      { id: "17", name: "青蘋果雙牙軟糖", price: 135, tag: "酸甜清香", desc: "可愛吸血鬼牙齒造型，青蘋果酸糖漿內餡。", icon: "🦷" },
+      { id: "18", name: "優格風味小白骨架軟糖", price: 185, tag: "乳酸菌風味", desc: "香甜優格搭配草莓果醬底座，絕配美味。", icon: "👻" },
+      { id: "19", name: "草莓血絲眼球棒棒糖", price: 85, tag: "派對熱銷", desc: "硬糖外殼搭配爆漿流心，甜蜜持久。", icon: "🍭" },
+      { id: "20", name: "萌獸糖果大禮包", price: 280, tag: "超值組合", desc: "內含人氣精選綜合 Q 版器官糖果大集合。", icon: "🎁" }
+    ];
+
+    // 動態渲染 20 個商品到網頁上
+    const productGrid = document.getElementById('productGrid');
+    productGrid.innerHTML = products.map(p => `
+      <div class="card" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" data-icon="${p.icon}">
+        <div class="organ-preview">
+          <span class="organ-tag">${p.tag}</span>
+          <div class="organ-visual">${p.icon}</div>
+        </div>
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <div class="card-footer">
+          <span class="price">NT$ ${p.price}</span>
+          <button class="add-to-cart-btn">加入購物車</button>
+        </div>
+      </div>
+    `).join('');
+
+    let cart = [];
+    
+    const cartToggleBtn = document.getElementById('cartToggleBtn');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    const cartDrawer = document.getElementById('cartDrawer');
+    const cartCountEl = document.getElementById('cart-count');
+    const cartItemsContainer = document.getElementById('cartItemsContainer');
+    const drawerFooter = document.getElementById('drawerFooter');
+    const totalAmountEl = document.getElementById('totalAmount');
+
+    cartToggleBtn.addEventListener('click', () => cartDrawer.classList.add('open'));
+    closeDrawerBtn.addEventListener('click', () => cartDrawer.classList.remove('open'));
+
+    // 監聽所有加入購物車按鈕
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const card = button.closest('.card');
+        const id = card.dataset.id;
+        const name = card.dataset.name;
+        const price = parseInt(card.dataset.price);
+        const icon = card.dataset.icon;
+
+        const existingItem = cart.find(item => item.id === id);
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({ id, name, price, icon, quantity: 1 });
+        }
+
+        updateCartUI();
+
+        // 觸發帶血飛刀點擊特效
+        const rect = button.getBoundingClientRect();
+        playBrutalSlashEffect(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      });
+    });
+
+    // 更新購物車 UI
+    function updateCartUI() {
+      const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCountEl.textContent = totalCount;
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div class="empty-cart-msg">糖果籃目前空空如也唷～</div>';
+        drawerFooter.style.display = 'none';
+        return;
+      }
+
+      drawerFooter.style.display = 'block';
+      let totalSum = 0;
+
+      cartItemsContainer.innerHTML = cart.map(item => {
+        const itemTotal = item.price * item.quantity;
+        totalSum += itemTotal;
+        return `
+          <div class="cart-item">
+            <div class="cart-item-img">${item.icon}</div>
+            <div class="cart-item-info">
+              <span class="cart-item-title">${item.name}</span>
+              <span class="cart-item-price">NT$ ${itemTotal}</span>
+              <div class="quantity-controls">
+                <button class="qty-btn" onclick="changeQty('${item.id}', -1)">-</button>
+                <span class="qty-num">${item.quantity}</span>
+                <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+              </div>
+            </div>
+            <button class="remove-btn" onclick="removeItem('${item.id}')">🗑️</button>
+          </div>
+        `;
+      }).join('');
+
+      totalAmountEl.textContent = `NT$ ${totalSum}`;
+    }
+
+    // 增減數量功能
+    window.changeQty = function(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (item) {
+        item.quantity += delta;
+        if (item.quantity <= 0) {
+          cart = cart.filter(i => i.id !== id);
+        }
+        updateCartUI();
+      }
+    };
+
+    // 移除商品
+    window.removeItem = function(id) {
+      cart = cart.filter(item => item.id !== id);
+      updateCartUI();
+    };
+
+    // 血刀斬擊點擊特效
+    function playBrutalSlashEffect(x, y) {
+      const layer = document.createElement('div');
+      layer.className = 'slash-container';
+
+      const knife = document.createElement('div');
+      knife.className = 'flying-knife';
+      knife.textContent = '🔪';
+      
+      knife.style.setProperty('--startX', `${x - 100}px`);
+      knife.style.setProperty('--startY', `${y - 100}px`);
+      knife.style.setProperty('--midX', `${x - 15}px`);
+      knife.style.setProperty('--midY', `${y - 15}px`);
+      knife.style.setProperty('--endX', `${x + 70}px`);
+      knife.style.setProperty('--endY', `${y + 70}px`);
+      layer.appendChild(knife);
+
+      for (let i = 0; i < 20; i++) {
+        const blood = document.createElement('div');
+        blood.className = 'blood-splatter';
+        const size = Math.random() * 10 + 4;
+        blood.style.width = `${size}px`;
+        blood.style.height = `${size}px`;
+        blood.style.left = `${x}px`;
+        blood.style.top = `${y}px`;
+
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 90 + 20;
+        blood.style.setProperty('--bX', `${Math.cos(angle) * distance}px`);
+        blood.style.setProperty('--bY', `${Math.sin(angle) * distance}px`);
+        layer.appendChild(blood);
+      }
+
+      document.body.appendChild(layer);
+      setTimeout(() => layer.remove(), 500);
+    }
+  </script>
+</body>
+</html>
